@@ -99,6 +99,7 @@
 
 - (void)save:(id)sender {
     [self savePageIndex:curPageIndex];
+    [super save:self];
 }
 
 - (void)submit:(id)sender {

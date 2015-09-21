@@ -27,6 +27,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"入职管理";
+    UIBarButtonItem *stepItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"step1"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.rightBarButtonItem = stepItem;
     self.view.backgroundColor = [UIColor whiteColor];
     _costCenteDatas = @[];
     _composes = @[];
@@ -85,9 +87,7 @@
         NSInteger pageIndex = [self pageIndex];
         if (pageIndex > curPageIndex) {
             // 跳转
-            UserInfoViewController *vc = [[UserInfoViewController alloc] init];
-            vc.title = @"个人信息";
-            [weakVC.navigationController pushViewController:vc animated:NO];
+            [weakVC nextPage:NO];
         }
     } failure:^(NSString *msg) {
         
@@ -160,6 +160,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"现  居  地 : " labelImage:[UIImage imageNamed:@"entry_nowaddress"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].Address;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].Address = string;
@@ -168,6 +169,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"联系电话 : " labelImage:[UIImage imageNamed:@"entry_contactway"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].Mobile;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].Mobile = string;
@@ -176,6 +178,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"紧急联系人 : " labelImage:[UIImage imageNamed:@"entry_emergencyperson"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].UrgentContact;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].UrgentContact = string;
@@ -184,6 +187,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"紧急联系方式 : " labelImage:[UIImage imageNamed:@"entry_emergencycontact"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].UrgentMobile;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].UrgentMobile = string;
@@ -192,6 +196,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"户口所在地 : " labelImage:[UIImage imageNamed:@"entry_houschold"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].Residence;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].Residence = string;
@@ -202,35 +207,60 @@
 }
 
 - (void)save:(id)sender {
-    [self savePageIndex:curPageIndex];
+    if ([self check]) {
+        [self savePageIndex:curPageIndex];
+        [super save:self];
+    }
 }
 
 - (void)next:(id)sender {
+    if ([self check]) {
+        [self nextPage:YES];
+    }
+}
+
+
+- (BOOL)check {
     
     if (![JPersonInfo person].Address || [[JPersonInfo person].Address isEqualToString:@""]) {
         [self.view makeToast:@"请输入现居地"];
-        return;
+        return false;
     }
     if (![JPersonInfo person].Mobile || [[JPersonInfo person].Mobile isEqualToString:@""]) {
         [self.view makeToast:@"请输入联系电话"];
-        return;
+        return false;
+    }
+    if (![[JPersonInfo person].Mobile isValidPhoneNum]) {
+        [self.view makeToast:@"联系电话格式错误！"];
+        return false;
     }
     if (![JPersonInfo person].UrgentContact || [[JPersonInfo person].UrgentContact isEqualToString:@""]) {
         [self.view makeToast:@"请输入紧急联系人"];
-        return;
+        return false;
     }
     if (![JPersonInfo person].UrgentMobile || [[JPersonInfo person].UrgentMobile isEqualToString:@""]) {
         [self.view makeToast:@"请输入紧急联系方式"];
-        return;
+        return false;
+    }
+    if (![[JPersonInfo person].UrgentMobile isValidPhoneNum]) {
+        [self.view makeToast:@"紧急联系方式格式错误！"];
+        return false;
     }
     if (![JPersonInfo person].Residence || [[JPersonInfo person].Residence isEqualToString:@""]) {
         [self.view makeToast:@"请输入户口所在地"];
-        return;
+        return false;
     }
-    
+    return true;
+}
+
+- (void)nextPage:(BOOL)animated {
     UserInfoViewController *vc = [[UserInfoViewController alloc] init];
     vc.title = @"个人信息";
-    [self.navigationController pushViewController:vc animated:YES];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
+    UIBarButtonItem *stepItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"step2"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    vc.navigationItem.rightBarButtonItem = stepItem;
+    [self.navigationController pushViewController:vc animated:animated];
 }
 
 

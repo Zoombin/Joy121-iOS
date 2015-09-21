@@ -214,9 +214,7 @@
     NSInteger pageIndex = [self pageIndex];
     if (pageIndex > curPageIndex) {
         // 跳转
-        FamilyInfoViewController *vc = [[FamilyInfoViewController alloc] init];
-        vc.title = @"家庭信息";
-        [self.navigationController pushViewController:vc animated:NO];
+        [self nextPage:NO];
     }
 
 }
@@ -251,12 +249,21 @@
 
 - (void)save:(id)sender {
     [self savePageIndex:curPageIndex];
+    [super save:self];
 }
 
 - (void)next:(id)sender {
+    [self nextPage:YES];
+}
+
+- (void)nextPage:(BOOL)animated {
     FamilyInfoViewController *vc = [[FamilyInfoViewController alloc] init];
     vc.title = @"家庭信息";
-    [self.navigationController pushViewController:vc animated:YES];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
+    UIBarButtonItem *stepItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"step5"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    vc.navigationItem.rightBarButtonItem = stepItem;
+    [self.navigationController pushViewController:vc animated:animated];
 }
 
 #pragma uitableview

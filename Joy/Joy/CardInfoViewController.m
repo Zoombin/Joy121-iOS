@@ -56,9 +56,7 @@ NS_ENUM(NSInteger, FileType) {
     NSInteger pageIndex = [self pageIndex];
     if (pageIndex > curPageIndex) {
         // 跳转
-        ExperienceViewController *vc = [[ExperienceViewController alloc] init];
-        vc.title = @"个人经历";
-        [self.navigationController pushViewController:vc animated:NO];
+        [self nextPage:NO];
     }
 }
 
@@ -149,13 +147,23 @@ NS_ENUM(NSInteger, FileType) {
 
 - (void)save:(id)sender {
     [self savePageIndex:curPageIndex];
+    [super save:self];
 }
 
 - (void)next:(id)sender {
+    [self nextPage:YES];
+}
+
+- (void)nextPage:(BOOL)animated {
     ExperienceViewController *vc = [[ExperienceViewController alloc] init];
     vc.title = @"个人经历";
-    [self.navigationController pushViewController:vc animated:YES];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
+    UIBarButtonItem *stepItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"step4"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    vc.navigationItem.rightBarButtonItem = stepItem;
+    [self.navigationController pushViewController:vc animated:animated];
 }
+
 
 #pragma 选择照片
 

@@ -34,9 +34,7 @@
     NSInteger pageIndex = [self pageIndex];
     if (pageIndex > curPageIndex) {
         // 跳转
-        CardInfoViewController *vc = [[CardInfoViewController alloc] init];
-        vc.title = @"证件信息";
-        [self.navigationController pushViewController:vc animated:NO];
+        [self nextPage:NO];
     }
 }
 
@@ -44,6 +42,7 @@
     [_datas removeAllObjects];
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"中  文  名 : " labelImage:[UIImage imageNamed:@"entry_chinesename"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].PersonName;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].PersonName = string;
@@ -89,6 +88,7 @@
 //    }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"籍    贯 : " labelImage:[UIImage imageNamed:@"entry_birthplace"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].Regions;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].Regions = string;
@@ -97,6 +97,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"身份证号 : " labelImage:[UIImage imageNamed:@"entry_idno"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].IdNo;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].IdNo = string;
@@ -105,6 +106,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"学历编号 : " labelImage:[UIImage imageNamed:@"entry_degreeno"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].EducationNo;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].EducationNo = string;
@@ -121,6 +123,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"开户银行 : " labelImage:[UIImage imageNamed:@"entry_bankname"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].DepositBank;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].DepositBank = string;
@@ -129,6 +132,7 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"银行账号 : " labelImage:[UIImage imageNamed:@"entry_bankno"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].DepositCardNo;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].DepositCardNo = string;
@@ -144,43 +148,54 @@
 }
 
 - (void)save:(id)sender {
-    [self savePageIndex:curPageIndex];
+    if ([self check]) {
+        [self savePageIndex:curPageIndex];
+        [super save:self];
+    }
 }
 
 - (void)next:(id)sender {
-    
-    
+    if ([self check]) {
+        [self nextPage:YES];
+
+    }}
+
+- (BOOL)check {
     if (![JPersonInfo person].PersonName || [[JPersonInfo person].PersonName isEqualToString:@""]) {
         [self.view makeToast:@"请输入中文名"];
-        return;
-    }
-    if (![JPersonInfo person].EnglishName || [[JPersonInfo person].EnglishName isEqualToString:@""]) {
-        [self.view makeToast:@"请输入英文名"];
-        return;
+        return false;
     }
     if (![JPersonInfo person].Regions || [[JPersonInfo person].Regions isEqualToString:@""]) {
         [self.view makeToast:@"请输入籍贯"];
-        return;
+        return false;
     }
     if (![JPersonInfo person].IdNo || [[JPersonInfo person].IdNo isEqualToString:@""]) {
         [self.view makeToast:@"请输入身份证号"];
-        return;
+        return false;
     }
     if (![JPersonInfo person].EducationNo || [[JPersonInfo person].EducationNo isEqualToString:@""]) {
         [self.view makeToast:@"请输入学历编号"];
-        return;
+        return false;
     }
     if (![JPersonInfo person].DepositBank || [[JPersonInfo person].DepositBank isEqualToString:@""]) {
         [self.view makeToast:@"请输入开户银行"];
-        return;
+        return false;
     }
     if (![JPersonInfo person].DepositCardNo || [[JPersonInfo person].DepositCardNo isEqualToString:@""]) {
         [self.view makeToast:@"请输入银行账号"];
-        return;
+        return false;
     }
+    return true;
+}
+
+- (void)nextPage:(BOOL)animated {
     CardInfoViewController *vc = [[CardInfoViewController alloc] init];
     vc.title = @"证件信息";
-    [self.navigationController pushViewController:vc animated:YES];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"上一步" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
+    UIBarButtonItem *stepItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"step3"] style:UIBarButtonItemStylePlain target:nil action:nil];
+    vc.navigationItem.rightBarButtonItem = stepItem;
+    [self.navigationController pushViewController:vc animated:animated];
 }
 
 /*

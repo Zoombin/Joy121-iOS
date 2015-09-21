@@ -915,7 +915,7 @@ static NSString * const TOMMY = @"TOMMY";
                 id obj = [dict objectForKey:key];
                 if ([obj isKindOfClass:[NSString class]]) {
                     if ([obj rangeOfString:@"/Date("].length > 0) {
-                        [info setValue:[obj getCorrectDate] forKey:key];
+                        [info setValue:[obj getCorrectDateWithoutTime] forKey:key];
                     }
                 }
             }
