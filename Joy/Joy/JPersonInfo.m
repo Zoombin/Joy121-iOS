@@ -40,7 +40,8 @@ static JPersonInfo *personInfo = nil;
     if (self) {
         _Achievement = @"";
         _Position = @"";
-        _Date = @"";
+        _SDate = @"";
+        _EDate = @"";
         _Company = @"";
     }
     return self;
@@ -57,7 +58,8 @@ static JPersonInfo *personInfo = nil;
     if (self) {
         _Achievement = @"";
         _Profession = @"";
-        _Date = @"";
+        _SDate = @"";
+        _EDate = @"";
         _School = @"";
     }
     return self;

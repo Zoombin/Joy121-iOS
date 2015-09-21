@@ -18,7 +18,8 @@
 @end
 
 @interface JExperienceCell : UITableViewCell {
-    UITextField *dateLabel;
+    UITextField *sDateLabel;
+    UITextField *eDateLabel;
     UITextField *birthdayLabel;
     UITextField *addressLabel;
     UITextField *shipLabel;
@@ -37,26 +38,37 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        UIView *colorView = [[UIView alloc] initWithFrame:CGRectMake(50, 24, 4, 82)];
+        UIView *colorView = [[UIView alloc] initWithFrame:CGRectMake(50, 24, 4, 102)];
         colorView.tag = 9999;
         [self.contentView addSubview:colorView];
-        _labels = @[@[@"时间：", @"学校：", @"专业：", @"收获："],
-                    @[@"时间：", @"公司：", @"职位：", @"收获："]];
+        _labels = @[@[@"开始时间：", @"结束时间：", @"学校：", @"专业：", @"收获："],
+                    @[@"开始时间：", @"结束时间：", @"公司：", @"职位：", @"收获："]];
         
-        dateLabel = [[UITextField alloc] initWithFrame:CGRectMake(60, 20, winSize.width - 120, 20)];
-        dateLabel.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
-        dateLabel.font = [UIFont systemFontOfSize:13];
-        dateLabel.enabled = NO;
-        dateLabel.tag = 10000;
-        [dateLabel addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-        [self.contentView addSubview:dateLabel];
-        [dateLabel loadLine];
-        UIButton *button = [[UIButton alloc] initWithFrame:dateLabel.frame];
-        [button addTarget:self action:@selector(selectDate:) forControlEvents:UIControlEventTouchUpInside];
+        sDateLabel = [[UITextField alloc] initWithFrame:CGRectMake(60, 20, winSize.width - 120, 20)];
+        sDateLabel.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
+        sDateLabel.font = [UIFont systemFontOfSize:13];
+        sDateLabel.enabled = NO;
+        sDateLabel.tag = 10000;
+        [sDateLabel addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [self.contentView addSubview:sDateLabel];
+        [sDateLabel loadLine];
+        UIButton *button = [[UIButton alloc] initWithFrame:sDateLabel.frame];
+        [button addTarget:self action:@selector(selectSDate:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:button];
         
+        eDateLabel = [[UITextField alloc] initWithFrame:CGRectMake(60, sDateLabel.bottom + 2, winSize.width - 120, 20)];
+        eDateLabel.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
+        eDateLabel.font = [UIFont systemFontOfSize:13];
+        eDateLabel.enabled = NO;
+        eDateLabel.tag = 10000;
+        [eDateLabel addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        [self.contentView addSubview:eDateLabel];
+        [eDateLabel loadLine];
+        button = [[UIButton alloc] initWithFrame:eDateLabel.frame];
+        [button addTarget:self action:@selector(selectEDate:) forControlEvents:UIControlEventTouchUpInside];
+        [self.contentView addSubview:button];
         
-        birthdayLabel = [[UITextField alloc] initWithFrame:CGRectMake(60, dateLabel.bottom + 2, winSize.width - 120, 20)];
+        birthdayLabel = [[UITextField alloc] initWithFrame:CGRectMake(60, eDateLabel.bottom + 2, winSize.width - 120, 20)];
         birthdayLabel.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
         birthdayLabel.font = [UIFont systemFontOfSize:13];
         birthdayLabel.tag = 10001;
@@ -85,9 +97,22 @@
     return self;
 }
 
-- (void)selectDate:(id)sender {
-    [ActionSheetDatePicker showPickerWithTitle:@"选择日期" datePickerMode:UIDatePickerModeDate selectedDate:[[dateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:0] withString:@""] toDate] doneBlock:^(ActionSheetDatePicker *picker, id selectedDate, id origin) {
-        dateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:0], [selectedDate toDateString]];
+- (void)selectSDate:(id)sender {
+    __weak JExperienceCell *cell = self;
+    [ActionSheetDatePicker showPickerWithTitle:@"选择日期" datePickerMode:UIDatePickerModeDate selectedDate:[[sDateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:0] withString:@""] toDate] doneBlock:^(ActionSheetDatePicker *picker, id selectedDate, id origin) {
+        sDateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:0], [selectedDate toDateString]];
+        [cell textFieldDidChange:sDateLabel];
+    } cancelBlock:^(ActionSheetDatePicker *picker) {
+        NSLog(@"Block Picker Canceled");
+    } origin:self];
+}
+
+
+- (void)selectEDate:(id)sender {
+    __weak JExperienceCell *cell = self;
+    [ActionSheetDatePicker showPickerWithTitle:@"选择日期" datePickerMode:UIDatePickerModeDate selectedDate:[[eDateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:1] withString:@""] toDate] doneBlock:^(ActionSheetDatePicker *picker, id selectedDate, id origin) {
+        eDateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:1], [selectedDate toDateString]];
+        [cell textFieldDidChange:eDateLabel];
     } cancelBlock:^(ActionSheetDatePicker *picker) {
         NSLog(@"Block Picker Canceled");
     } origin:self];
@@ -95,31 +120,34 @@
 
 - (void)setData:(id)data {
     _data = data;
-    
     if (_type == 0) {
-        dateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:0], ((JLearning *)_data).Date];
-        birthdayLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:1], ((JLearning *)_data).School];
-        addressLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:2], ((JLearning *)_data).Profession];
-        shipLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:3], ((JLearning *)_data).Achievement];
+        sDateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:0], ((JLearning *)_data).SDate];
+        eDateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:1], ((JLearning *)_data).EDate];
+        birthdayLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:2], ((JLearning *)_data).School];
+        addressLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:3], ((JLearning *)_data).Profession];
+        shipLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:4], ((JLearning *)_data).Achievement];
     } else {
-        dateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:0], ((JJob *)_data).Date];
-        birthdayLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:1], ((JJob *)_data).Company];
-        addressLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:2], ((JJob *)_data).Position];
-        shipLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:3], ((JJob *)_data).Achievement];
+        sDateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:0], ((JJob *)_data).SDate];
+        eDateLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:1], ((JLearning *)_data).EDate];
+        birthdayLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:2], ((JJob *)_data).Company];
+        addressLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:3], ((JJob *)_data).Position];
+        shipLabel.text = [NSString stringWithFormat:@"%@%@", [[_labels objectAtIndex:_type] objectAtIndex:4], ((JJob *)_data).Achievement];
     }
 }
 
-- (void)textFieldDidChange:(UITextField *)textField{
+- (void)textFieldDidChange:(UITextField *)textField {
     if (_type == 0) {
-        ((JLearning *)_data).Date = [dateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:0] withString:@""];
-        ((JLearning *)_data).School = [birthdayLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:1] withString:@""];
-        ((JLearning *)_data).Profession = [addressLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:2] withString:@""];
-        ((JLearning *)_data).Achievement = [shipLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:3] withString:@""];
+        ((JLearning *)_data).SDate = [sDateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:0] withString:@""];
+        ((JLearning *)_data).EDate = [eDateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:1] withString:@""];
+        ((JLearning *)_data).School = [birthdayLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:2] withString:@""];
+        ((JLearning *)_data).Profession = [addressLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:3] withString:@""];
+        ((JLearning *)_data).Achievement = [shipLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:4] withString:@""];
     } else {
-        ((JJob *)_data).Date = [dateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:0] withString:@""];
-        ((JJob *)_data).Company = [birthdayLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:1] withString:@""];
-        ((JJob *)_data).Position = [addressLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:2] withString:@""];
-        ((JJob *)_data).Achievement = [shipLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:3] withString:@""];
+        ((JLearning *)_data).SDate = [sDateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:0] withString:@""];
+        ((JLearning *)_data).EDate = [eDateLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:1] withString:@""];
+        ((JJob *)_data).Company = [birthdayLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:2] withString:@""];
+        ((JJob *)_data).Position = [addressLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:3] withString:@""];
+        ((JJob *)_data).Achievement = [shipLabel.text stringByReplacingOccurrencesOfString:[[_labels objectAtIndex:_type] objectAtIndex:4] withString:@""];
     }
     
     if (_delegate) {
@@ -313,7 +341,7 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 110;
+    return 133;
 }
 
 - (void)textFieldDidChange:(id)data index:(int)index type:(int)type {

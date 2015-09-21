@@ -130,7 +130,9 @@
 
 @property (nonatomic, copy) NSString *Position;
 
-@property (nonatomic, copy) NSString *Date;
+@property (nonatomic, copy) NSString *SDate;
+
+@property (nonatomic, copy) NSString *EDate;
 
 @property (nonatomic, copy) NSString *Company;
 
@@ -142,7 +144,9 @@
 
 @property (nonatomic, copy) NSString *Profession;
 
-@property (nonatomic, copy) NSString *Date;
+@property (nonatomic, copy) NSString *SDate;
+
+@property (nonatomic, copy) NSString *EDate;
 
 @property (nonatomic, copy) NSString *School;
 
