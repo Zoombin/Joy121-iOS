@@ -10,8 +10,14 @@
 #import "JAFHTTPClient.h"
 #import "Contact.h"
 #import "ContactDetailsTableViewController.h"
-
-@interface ContactsTableViewController () <UISearchBarDelegate>
+#define SelectColor [UIColor colorWithRed:0.93 green:0.56 blue:0.12 alpha:1]
+#define NormalColor [UIColor colorWithRed:0.53 green:0.53 blue:0.53 alpha:1]
+@interface ContactsTableViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource> {
+    UITableView *_tableView;
+    UIButton *_normalButton;
+    UIButton *_importantButton;
+    int _type;
+}
 
 @property (readwrite) NSArray *contacts;
 @property (readwrite) UISearchBar *searchBar;
@@ -27,7 +33,21 @@
 	
 	self.title = NSLocalizedString(@"公司通讯录", nil);
 	_page = 1;
-	[self loadContacts:nil page:_page];
+    _type = 0;
+
+    UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, navHeight(self), winSize.width, 40)];
+    [self.view addSubview:tableHeaderView];
+    
+    _normalButton = [self sengmentButton:@"常用联系人" x:0];
+    [tableHeaderView addSubview:_normalButton];
+    _importantButton = [self sengmentButton:@"重要联系人" x:winSize.width / 2];
+    [tableHeaderView addSubview:_importantButton];
+    [self clickSengment:_normalButton];
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableHeaderView.bottom, winSize.width, winSize.height - tableHeaderView.bottom - navHeight(self)) style:UITableViewStyleGrouped];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    [self.view addSubview:_tableView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -39,28 +59,77 @@
     [super didReceiveMemoryWarning];
 }
 
+- (UIButton *)sengmentButton:(NSString *)name x:(int)x {
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(x, 0, winSize.width / 2, 40)];
+    [button setTitle:name forState:UIControlStateNormal];
+    [button setTitleColor:NormalColor forState:UIControlStateNormal];
+    [button setTitleColor:SelectColor forState:UIControlStateSelected];
+    [button addTarget:self action:@selector(clickSengment:) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIView *line = [[UIView alloc] initWithFrame:CGRectMake(0, button.bottom - 1, button.width, 1)];
+    line.tag = 10000;
+    [button addSubview:line];
+    return button;
+}
+
+- (void)clickSengment:(id)sender {
+    if (sender == _normalButton) {
+        _normalButton.selected = YES;
+        _importantButton.selected = NO;
+        [_normalButton viewWithTag:10000].backgroundColor = SelectColor;
+        [_importantButton viewWithTag:10000].backgroundColor = NormalColor;
+        _type = 0;
+        _noMore = NO;
+    } else if (sender == _importantButton) {
+        _normalButton.selected = NO;
+        _importantButton.selected = YES;
+        [_normalButton viewWithTag:10000].backgroundColor = NormalColor;
+        [_importantButton viewWithTag:10000].backgroundColor = SelectColor;
+        _type = 1;
+        _noMore = YES;
+    }
+    _contacts = [NSArray array];
+    _page = 1;
+    [self loadContacts:nil page:_page];
+}
+
 - (void)loadContacts:(NSString *)queryString page:(NSUInteger)page
 {
 	[self displayHUD:@"加载中..."];
-	[[JAFHTTPClient shared] contacts:queryString page:page pagesize:@"20" withBlock:^(NSArray *multiAttributes, NSError *error) {
-		[self hideHUD:YES];
-		if (!error) {
-			if (multiAttributes.count > 0) {
-				NSArray *tmp = [Contact multiWithAttributesArray:multiAttributes];
-				NSMutableArray *all = [NSMutableArray array];
-				if (tmp.count) {
-					[all addObjectsFromArray:tmp];
-				}
-				if (_contacts.count) {
-					[all addObjectsFromArray:_contacts];
-				}
-				_contacts = [NSArray arrayWithArray:all];
-				[self.tableView reloadData];
-			} else {
-				_noMore = YES;
-			}
-		}
-	}];
+    if (_type == 0) {
+        [[JAFHTTPClient shared] contacts:queryString page:page pagesize:@"20" withBlock:^(NSArray *multiAttributes, NSError *error) {
+            [self hideHUD:YES];
+            if (!error) {
+                if (multiAttributes.count > 0) {
+                    NSArray *tmp = [Contact multiWithAttributesArray:multiAttributes];
+                    NSMutableArray *all = [NSMutableArray array];
+                    if (tmp.count) {
+                        [all addObjectsFromArray:tmp];
+                    }
+                    if (_contacts.count) {
+                        [all addObjectsFromArray:_contacts];
+                    }
+                    _contacts = [NSArray arrayWithArray:all];
+                    [_tableView reloadData];
+                } else {
+                    _noMore = YES;
+                }
+            }
+        }];
+    } else {
+        [[JAFHTTPClient shared] getEntryRelation:^(NSArray *multiAttributes, NSError *error) {
+            [self hideHUD:YES];
+            if (!error) {
+                if (multiAttributes) {
+                    _contacts = multiAttributes;
+                } else {
+                    _contacts = [NSArray array];
+                }
+                [_tableView reloadData];
+            }
+        }];
+    }
+
 }
 
 - (void)loadMore
@@ -138,7 +207,7 @@
 	if (searchBar.text.length) {
 		_page = 1;
 		_contacts = [NSArray array];
-		[self.tableView reloadData];
+		[_tableView reloadData];
 		[self loadContacts:searchBar.text page:_page];
 	}
 }

@@ -872,6 +872,22 @@ static NSString * const TOMMY = @"TOMMY";
     }];
 }
 
+- (void)getEntryRelation:(void (^)(NSArray *multiAttributes, NSError *error))block {
+    NSDictionary *parameters = @{
+                                 @"loginName": [self userName]};
+    [[JAFHTTPClient http] getPath:@"api/Entry/GetEntryRelation" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        id jsonValue = [self jsonValue:responseObject];
+        NSArray *multiAttributes = jsonValue[@"retobj"];
+        if (block) {
+            block(multiAttributes, nil);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (block) {
+            block(nil, error);
+        }
+    }];
+}
+
 - (void)getSysDataWithType:(NSString *)type
                        parentId:(int)parentId
                         success:(void (^)(NSArray *sysDatas))success

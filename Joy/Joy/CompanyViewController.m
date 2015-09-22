@@ -145,7 +145,7 @@
         //self.contactsAlertView.alertViewStyle = UIAlertViewStyleSecureTextInput;
         //[self.contactsAlertView show];
         //controller = nil;
-        ContactsTableViewController *contactsTableViewController = [[ContactsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+        ContactsTableViewController *contactsTableViewController = [[ContactsTableViewController alloc] init];
         controller = contactsTableViewController;
         hideBottomBar = YES;
     } else if (class == [DepotTableViewController class]) {
@@ -178,7 +178,7 @@
     if (buttonIndex != alertView.cancelButtonIndex) {
         if (alertView == _contactsAlertView) {
             if ([pwdValue isEqualToString:[[JAFHTTPClient shared] passWord]]) {
-                ContactsTableViewController *contactsTableViewController = [[ContactsTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+                ContactsTableViewController *contactsTableViewController = [[ContactsTableViewController alloc] init];
                 contactsTableViewController.hidesBottomBarWhenPushed = YES;
                 [self.navigationController pushViewController:contactsTableViewController animated:YES];
             }

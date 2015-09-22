@@ -103,7 +103,21 @@
 - (void)encourageDetailsWithReportCaseID:(NSString *)reportCaseID withblock:(void (^)(NSArray *multiAttributes, NSError *error))block;
 
 
+/**
+ *  获取模块
+ *
+ *  @param block
+ */
 - (void)getModulesByCompany:(void (^)(NSArray *multiAttributes, NSError *error))block;
+
+/**
+ *  获取重要联系人
+ *
+ *  @param success
+ *  @param failure
+ */
+- (void)getEntryRelation:(void (^)(NSArray *multiAttributes, NSError *error))block;
+
 #pragma 入职离职
 /**
  *  获取字典项
