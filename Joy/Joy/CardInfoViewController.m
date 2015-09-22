@@ -57,6 +57,8 @@ NS_ENUM(NSInteger, FileType) {
     if (pageIndex > curPageIndex) {
         // 跳转
         [self nextPage:NO];
+    } else {
+        [JPersonInfo person].CurrentStep = -1;
     }
 }
 
@@ -151,7 +153,37 @@ NS_ENUM(NSInteger, FileType) {
 }
 
 - (void)next:(id)sender {
-    [self nextPage:YES];
+    if ([self check]) {
+        [self nextPage:YES];
+    }
+}
+
+- (BOOL)check {
+    if (!_materials.Certificates || [_materials.Certificates isEqualToString:@""]) {
+        [self.view makeToast:@"请上传证件照"];
+        return false;
+    }
+    if (!_materials.LearningCertificate || [_materials.LearningCertificate isEqualToString:@""]) {
+        [self.view makeToast:@"请上传学习证书"];
+        return false;
+    }
+    if (!_materials.IDImage.Positive || [_materials.IDImage.Positive isEqualToString:@""]) {
+        [self.view makeToast:@"请上传身份证正面"];
+        return false;
+    }
+    if (!_materials.IDImage.Reverse || [_materials.IDImage.Reverse isEqualToString:@""]) {
+        [self.view makeToast:@"请上传身份证反面"];
+        return false;
+    }
+    if (!_materials.Retirement || [_materials.Retirement isEqualToString:@""]) {
+        [self.view makeToast:@"请上传退工单"];
+        return false;
+    }
+    if (!_materials.Physical || [_materials.Physical isEqualToString:@""]) {
+        [self.view makeToast:@"请上传体检报告"];
+        return false;
+    }
+    return true;
 }
 
 - (void)nextPage:(BOOL)animated {

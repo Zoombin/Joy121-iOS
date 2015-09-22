@@ -35,6 +35,8 @@
     if (pageIndex > curPageIndex) {
         // 跳转
         [self nextPage:NO];
+    } else {
+        [JPersonInfo person].CurrentStep = -1;
     }
 }
 
@@ -148,10 +150,8 @@
 }
 
 - (void)save:(id)sender {
-    if ([self check]) {
-        [self savePageIndex:curPageIndex];
-        [super save:self];
-    }
+    [self savePageIndex:curPageIndex];
+    [super save:self];
 }
 
 - (void)next:(id)sender {

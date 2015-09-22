@@ -151,6 +151,8 @@
     if (pageIndex > curPageIndex) {
         // 跳转
         [self nextPage:NO];
+    } else {
+        [JPersonInfo person].CurrentStep = -1;
     }
 }
 

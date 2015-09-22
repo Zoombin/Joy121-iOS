@@ -26,9 +26,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"入职管理";
+    self.title = @"应聘信息";
     UIBarButtonItem *stepItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"step1"] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.rightBarButtonItem = stepItem;
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = item;
     self.view.backgroundColor = [UIColor whiteColor];
     _costCenteDatas = @[];
     _composes = @[];
@@ -88,6 +90,8 @@
         if (pageIndex > curPageIndex) {
             // 跳转
             [weakVC nextPage:NO];
+        } else {
+            [JPersonInfo person].CurrentStep = -1;
         }
     } failure:^(NSString *msg) {
         
@@ -207,10 +211,8 @@
 }
 
 - (void)save:(id)sender {
-    if ([self check]) {
-        [self savePageIndex:curPageIndex];
-        [super save:self];
-    }
+    [self savePageIndex:curPageIndex];
+    [super save:self];
 }
 
 - (void)next:(id)sender {
@@ -231,7 +233,7 @@
         return false;
     }
     if (![[JPersonInfo person].Mobile isValidPhoneNum]) {
-        [self.view makeToast:@"联系电话格式错误！"];
+        [self.view makeToast:@"请输入正确的联系电话"];
         return false;
     }
     if (![JPersonInfo person].UrgentContact || [[JPersonInfo person].UrgentContact isEqualToString:@""]) {
@@ -243,7 +245,7 @@
         return false;
     }
     if (![[JPersonInfo person].UrgentMobile isValidPhoneNum]) {
-        [self.view makeToast:@"紧急联系方式格式错误！"];
+        [self.view makeToast:@"请输入正确的紧急联系方式"];
         return false;
     }
     if (![JPersonInfo person].Residence || [[JPersonInfo person].Residence isEqualToString:@""]) {
