@@ -43,14 +43,11 @@
 }
 
 - (void)savePageIndex:(NSInteger)pageIndex {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setInteger:pageIndex forKey:@"pageIndex"];
-    [userDefaults synchronize];
+    [JPersonInfo person].CurrentStep = pageIndex;
 }
 
 - (NSInteger)pageIndex {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults integerForKey:@"pageIndex"];
+    return [JPersonInfo person].CurrentStep;
 }
 
 @end
