@@ -877,7 +877,8 @@ static NSString * const TOMMY = @"TOMMY";
                                  @"loginName": [self userName]};
     [[JAFHTTPClient http] getPath:@"api/Entry/GetEntryRelation" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         id jsonValue = [self jsonValue:responseObject];
-        NSArray *multiAttributes = jsonValue[@"retobj"];
+        NSLog(@"jsonValue --->\n%@", jsonValue);
+        NSArray *multiAttributes = jsonValue[@"RetObj"];
         if (block) {
             block(multiAttributes, nil);
         }

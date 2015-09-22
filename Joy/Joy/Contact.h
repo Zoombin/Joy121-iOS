@@ -8,6 +8,11 @@
 
 #import "ZBModel.h"
 
+typedef NS_ENUM(NSUInteger, ZBContactType) {
+    _Normal,
+    _Important
+};
+
 @interface Contact : ZBModel
 
 @property (nonatomic, strong) NSString *personName;
@@ -18,5 +23,9 @@
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, strong) NSString *phone;
 @property (nonatomic, strong) NSString *companyName;
+
+- (instancetype)initWithAttributes:(NSDictionary *)attributes type:(ZBContactType)type;
+
++ (NSArray *)multiWithAttributesArray:(NSArray *)array type:(ZBContactType)type;
 
 @end

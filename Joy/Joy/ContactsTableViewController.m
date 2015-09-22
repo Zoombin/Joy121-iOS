@@ -101,7 +101,7 @@
             [self hideHUD:YES];
             if (!error) {
                 if (multiAttributes.count > 0) {
-                    NSArray *tmp = [Contact multiWithAttributesArray:multiAttributes];
+                    NSArray *tmp = [Contact multiWithAttributesArray:multiAttributes type:_Normal];
                     NSMutableArray *all = [NSMutableArray array];
                     if (tmp.count) {
                         [all addObjectsFromArray:tmp];
@@ -121,7 +121,7 @@
             [self hideHUD:YES];
             if (!error) {
                 if (multiAttributes) {
-                    _contacts = multiAttributes;
+                    _contacts = [Contact multiWithAttributesArray:multiAttributes type:_Important];
                 } else {
                     _contacts = [NSArray array];
                 }
