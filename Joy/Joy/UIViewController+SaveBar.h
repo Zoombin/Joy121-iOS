@@ -18,6 +18,8 @@
 
 - (void)savePageIndex:(NSInteger)pageIndex;
 
+- (void)submit:(id)sender;
+
 - (NSInteger)pageIndex;
 
 @end

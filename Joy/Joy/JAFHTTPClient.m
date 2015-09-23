@@ -959,8 +959,10 @@ static NSString * const TOMMY = @"TOMMY";
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         id jsonValue = [self jsonValue:responseObject];
         NSLog(@"jsonValue --->\n%@", jsonValue);
+        success(jsonValue);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"%@", error);
+        failure(error.description);
     }];
     [operation start];
     

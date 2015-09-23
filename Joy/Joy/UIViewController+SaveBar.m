@@ -36,9 +36,18 @@
 
 - (void)save:(id)sender {
     [[JAFHTTPClient shared] updatePersonInfo:[JPersonInfo person] success:^{
-        
+        [self.view makeToast:@"保存成功"];
     } failure:^(NSString *msg) {
-        NSLog(@"%@", msg);
+        [self.view makeToast:msg];
+    }];
+}
+
+- (void)submit:(id)sender {
+    [JPersonInfo person].Submited = 1;
+    [[JAFHTTPClient shared] updatePersonInfo:[JPersonInfo person] success:^{
+        [self.view makeToast:@"提交成功"];
+    } failure:^(NSString *msg) {
+        [self.view makeToast:msg];
     }];
 }
 

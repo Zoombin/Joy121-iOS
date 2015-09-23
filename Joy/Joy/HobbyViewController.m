@@ -102,11 +102,6 @@
     [super save:self];
 }
 
-- (void)submit:(id)sender {
-    [JPersonInfo person].Submited = 1;
-    [super save:self];
-
-}
 
 - (void)refreshState {
     for (NSString *title in allDatas) {
