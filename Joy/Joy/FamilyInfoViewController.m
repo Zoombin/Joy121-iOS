@@ -9,7 +9,7 @@
 #import "FamilyInfoViewController.h"
 #import "EntryTableView.h"
 #import "HobbyViewController.h"
-#define curPageIndex 4
+#define curPageIndex 5
 
 @protocol JFamilyCellDelegate <NSObject>
 
@@ -39,6 +39,13 @@
         nameLabel.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
         nameLabel.font = [UIFont systemFontOfSize:15];
         nameLabel.tag = 10000;
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+            nameLabel.leftView = label;
+            nameLabel.leftViewMode = UITextFieldViewModeAlways;
+            label.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
+            label.font = [UIFont systemFontOfSize:13];
+        }
         [nameLabel addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [self.contentView addSubview:nameLabel];
         [nameLabel loadLine];
@@ -48,6 +55,13 @@
         birthdayLabel.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
         birthdayLabel.font = [UIFont systemFontOfSize:15];
         birthdayLabel.tag = 10001;
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+            birthdayLabel.leftView = label;
+            birthdayLabel.leftViewMode = UITextFieldViewModeAlways;
+            label.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
+            label.font = [UIFont systemFontOfSize:13];
+        }
         birthdayLabel.enabled = NO;
         [birthdayLabel addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [self.contentView addSubview:birthdayLabel];
@@ -61,6 +75,13 @@
         addressLabel.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
         addressLabel.font = [UIFont systemFontOfSize:15];
         addressLabel.tag = 10002;
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+            addressLabel.leftView = label;
+            addressLabel.leftViewMode = UITextFieldViewModeAlways;
+            label.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
+            label.font = [UIFont systemFontOfSize:13];
+        }
         [addressLabel addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [self.contentView addSubview:addressLabel];
         [addressLabel loadLine];
@@ -70,6 +91,13 @@
         shipLabel.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
         shipLabel.font = [UIFont systemFontOfSize:15];
         shipLabel.tag = 10003;
+        {
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 70, 20)];
+            shipLabel.leftView = label;
+            shipLabel.leftViewMode = UITextFieldViewModeAlways;
+            label.textColor = [UIColor colorWithRed:0.35 green:0.47 blue:0.58 alpha:1];
+            label.font = [UIFont systemFontOfSize:13];
+        }
         [shipLabel addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
         [self.contentView addSubview:shipLabel];
         [shipLabel loadLine];
@@ -80,25 +108,29 @@
 - (void)setFamily:(JFamily *)family {
     _family = family;
     
-    nameLabel.text = [NSString stringWithFormat:@"姓名：%@", family.Name];
-    birthdayLabel.text = [NSString stringWithFormat:@"生日：%@", family.Birthday];
-    addressLabel.text = [NSString stringWithFormat:@"地址：%@", family.Address];
-    shipLabel.text = [NSString stringWithFormat:@"关系：%@", family.RelationShip];
+    ((UILabel *)nameLabel.leftView).text = @"姓名：";
+    ((UILabel *)birthdayLabel.leftView).text = @"生日";
+    ((UILabel *)addressLabel.leftView).text = @"地址";
+    ((UILabel *)shipLabel.leftView).text = @"关系";
+    nameLabel.text = family.Name;
+    birthdayLabel.text = family.Birthday;
+    addressLabel.text = family.Address;
+    shipLabel.text = family.RelationShip;
 }
 
 - (void)selectDate:(id)sender {
-    [ActionSheetDatePicker showPickerWithTitle:@"选择日期" datePickerMode:UIDatePickerModeDate selectedDate:[[birthdayLabel.text stringByReplacingOccurrencesOfString:@"生日：" withString:@""] toDate] doneBlock:^(ActionSheetDatePicker *picker, id selectedDate, id origin) {
-        birthdayLabel.text = [NSString stringWithFormat:@"生日：%@", [selectedDate toDateString]];
+    [ActionSheetDatePicker showPickerWithTitle:@"选择日期" datePickerMode:UIDatePickerModeDate selectedDate:[birthdayLabel.text toDate] doneBlock:^(ActionSheetDatePicker *picker, id selectedDate, id origin) {
+        birthdayLabel.text = [selectedDate toDateString];
     } cancelBlock:^(ActionSheetDatePicker *picker) {
         NSLog(@"Block Picker Canceled");
     } origin:self];
 }
 
 - (void)textFieldDidChange:(UITextField *)textField{
-    _family.Name = [nameLabel.text stringByReplacingOccurrencesOfString:@"姓名：" withString:@""];
-    _family.Birthday = [birthdayLabel.text stringByReplacingOccurrencesOfString:@"生日：" withString:@""];
-    _family.Address = [addressLabel.text stringByReplacingOccurrencesOfString:@"地址：" withString:@""];
-    _family.RelationShip = [shipLabel.text stringByReplacingOccurrencesOfString:@"关系：" withString:@""];
+    _family.Name = nameLabel.text;
+    _family.Birthday = birthdayLabel.text;
+    _family.Address = addressLabel.text;
+    _family.RelationShip = shipLabel.text;
     
     if (_delegate) {
         [_delegate textFieldDidChange:_family index:_index];
@@ -109,8 +141,9 @@
 
 @interface FamilyInfoViewController () <UITableViewDataSource, UITableViewDelegate, JFamilyCellDelegate> {
     UITableView *_tableView;
+    JFamilyBase *_family;
     NSArray *_datas;
-    NSMutableArray *_family;
+    NSMutableArray *_familys;
 }
 @end
 
@@ -119,9 +152,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    NSString *family = [JPersonInfo person].Family;
-//    id array = [NSJSONSerialization JSONObjectWithData:[[JPersonInfo person].Family dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableLeaves error:nil];
-    _family = [NSMutableArray arrayWithArray:[JFamily objectArrayWithKeyValuesArray:family]];
+    
+    _family = [JFamilyBase objectWithKeyValues:[JPersonInfo person].Family];
+    _familys = [NSMutableArray arrayWithArray:_family.Relatives];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 60)];
     _tableView.backgroundColor = [UIColor grayColor];
@@ -163,7 +196,7 @@
 
 
 - (void)addnew:(id)sender {
-    [_family addObject:[[JFamily alloc] init]];
+    [_familys addObject:[[JFamily alloc] init]];
     [_tableView reloadData];
 }
 
@@ -197,13 +230,13 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    [_family removeObjectAtIndex:indexPath.row];
+    [_familys removeObjectAtIndex:indexPath.row];
     [JPersonInfo person].Family = [self toJSONData:_family];
     [tableView reloadData];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return _family.count;
+    return _familys.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -213,7 +246,7 @@
         cell.delegate = self;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
-    JFamily *family = [_family objectAtIndex:indexPath.row];
+    JFamily *family = [_familys objectAtIndex:indexPath.row];
     cell.index = @(indexPath.row).intValue;
     [cell setFamily:family];
     return cell;
@@ -225,8 +258,9 @@
 }
 
 - (void)textFieldDidChange:(JFamily *)family index:(int)index {
-    [_family replaceObjectAtIndex:index withObject:family];
-    [JPersonInfo person].Family = [self toJSONData:_family];
+    [_familys replaceObjectAtIndex:index withObject:family];
+    _family.Relatives = _familys;
+    [JPersonInfo person].Family = [_family JSONString];
 }
 
 - (NSString *)toJSONData:(NSArray *)theData{

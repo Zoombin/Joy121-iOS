@@ -9,7 +9,7 @@
 #import "CardInfoViewController.h"
 #import "EntryTableView.h"
 #import "ExperienceViewController.h"
-#define curPageIndex 2
+#define curPageIndex 3
 
 NS_ENUM(NSInteger, FileType) {
     None,

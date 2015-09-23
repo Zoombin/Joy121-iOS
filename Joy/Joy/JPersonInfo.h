@@ -24,6 +24,8 @@
 
 @property (nonatomic, assign) NSInteger CurrentStep;
 
+@property (nonatomic, assign) NSInteger Submited;
+
 @property (nonatomic, copy) NSString *Address;
 
 @property (nonatomic, copy) NSString *EmployeeId;
@@ -153,6 +155,12 @@
 @end
 
 #pragma 家庭信息
+
+@interface JFamilyBase : NSObject
+
+@property (nonatomic, copy) NSArray *Relatives;
+
+@end
 
 @interface JFamily : NSObject
 

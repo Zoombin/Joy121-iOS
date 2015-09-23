@@ -9,7 +9,7 @@
 #import "UserInfoViewController.h"
 #import "EntryTableView.h"
 #import "CardInfoViewController.h"
-#define curPageIndex 1
+#define curPageIndex 2
 
 @interface UserInfoViewController () {
     EntryTableView *_tableView;

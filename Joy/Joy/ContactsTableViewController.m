@@ -14,6 +14,7 @@
 #define NormalColor [UIColor colorWithRed:0.53 green:0.53 blue:0.53 alpha:1]
 @interface ContactsTableViewController () <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource> {
     UITableView *_tableView;
+    UIView *_sengmentView;
     UIButton *_normalButton;
     UIButton *_importantButton;
     int _type;
@@ -35,16 +36,23 @@
 	_page = 1;
     _type = 0;
 
-    UIView *tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, navHeight(self), winSize.width, 40)];
-    [self.view addSubview:tableHeaderView];
+    _sengmentView = [[UIView alloc] initWithFrame:CGRectMake(0, navHeight(self), winSize.width, 40)];
+    [self.view addSubview:_sengmentView];
     
     _normalButton = [self sengmentButton:@"常用联系人" x:0];
-    [tableHeaderView addSubview:_normalButton];
+    [_sengmentView addSubview:_normalButton];
     _importantButton = [self sengmentButton:@"重要联系人" x:winSize.width / 2];
-    [tableHeaderView addSubview:_importantButton];
+    [_sengmentView addSubview:_importantButton];
     [self clickSengment:_normalButton];
     
-    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableHeaderView.bottom, winSize.width, winSize.height - tableHeaderView.bottom - navHeight(self)) style:UITableViewStyleGrouped];
+    if (!_searchBar) {
+        _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, _sengmentView.bottom, self.view.frame.size.width, 40)];
+        _searchBar.placeholder = @"请搜索中文名，英文名，部门";
+        _searchBar.delegate = self;
+    }
+    [self.view addSubview:_searchBar];
+    
+    _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, _searchBar.bottom, winSize.width, winSize.height - _sengmentView.bottom - navHeight(self) - _searchBar.height)];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
@@ -80,6 +88,9 @@
         [_importantButton viewWithTag:10000].backgroundColor = NormalColor;
         _type = 0;
         _noMore = NO;
+        
+        _searchBar.hidden = NO;
+        _tableView.frame = CGRectMake(0, _searchBar.bottom, winSize.width, winSize.height - _sengmentView.bottom - navHeight(self) - _searchBar.height);
     } else if (sender == _importantButton) {
         _normalButton.selected = NO;
         _importantButton.selected = YES;
@@ -87,6 +98,10 @@
         [_importantButton viewWithTag:10000].backgroundColor = SelectColor;
         _type = 1;
         _noMore = YES;
+        
+        _searchBar.hidden = YES;
+        _tableView.frame = CGRectMake(0, _sengmentView.bottom, winSize.width, winSize.height - _sengmentView.bottom - navHeight(self));
+
     }
     _contacts = [NSArray array];
     _page = 1;
@@ -161,21 +176,20 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 40;
+    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
 	return 0.1;
 }
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	if (!_searchBar) {
-		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
-		_searchBar.placeholder = @"请搜索中文名，英文名，部门";
-		_searchBar.delegate = self;
-	}
-	return _searchBar;
-}
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+//	if (!_searchBar) {
+//		_searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
+//		_searchBar.placeholder = @"请搜索中文名，英文名，部门";
+//		_searchBar.delegate = self;
+//	}
+//	return _searchBar;
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];

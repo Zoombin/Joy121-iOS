@@ -69,6 +69,14 @@ static JPersonInfo *personInfo = nil;
 
 #pragma 家庭信息
 
+@implementation JFamilyBase
+
++ (NSDictionary *)objectClassInArray{
+    return @{@"Relatives" : [JFamily class]};
+}
+
+@end
+
 @implementation JFamily
 
 - (instancetype)init
