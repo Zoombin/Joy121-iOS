@@ -51,6 +51,7 @@
 
 - (void)submit:(id)sender {
     [JPersonInfo person].Submited = 1;
+    [JPersonInfo person].CurrentStep = 6;
     [[JAFHTTPClient shared] updatePersonInfo:[JPersonInfo person] success:^{
         [self.view makeToast:@"提交成功"];
         NSInteger pageIndex = [self pageIndex];
