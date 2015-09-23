@@ -54,6 +54,7 @@
 //    	_userNameTextField.text = @"310225198112162467";
 //    _passwordTextField.text = @"162467";
     // 入职模块账号
+//     ／ 547990
     _userNameTextField.text = @"620523198001061098";
         _passwordTextField.text = @"121";
     // 通讯录模块账号

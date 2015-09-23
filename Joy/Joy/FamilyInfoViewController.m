@@ -154,6 +154,9 @@
     self.view.backgroundColor = [UIColor whiteColor];
     
     _family = [JFamilyBase objectWithKeyValues:[JPersonInfo person].Family];
+    if (_family == nil) {
+        _family = [[JFamilyBase alloc] init];
+    }
     _familys = [NSMutableArray arrayWithArray:_family.Relatives];
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.width, self.view.height - 60)];
@@ -232,7 +235,8 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     [_familys removeObjectAtIndex:indexPath.row];
-    [JPersonInfo person].Family = [self toJSONData:_family];
+    _family.Relatives = _familys;
+    [JPersonInfo person].Family = [_family JSONString];
     [tableView reloadData];
 }
 
@@ -263,15 +267,6 @@
     _family.Relatives = _familys;
     [JPersonInfo person].Family = [_family JSONString];
 }
-
-- (NSString *)toJSONData:(NSArray *)theData{
-    NSMutableArray *arr = [NSMutableArray array];
-    for (JFamily *family in theData) {
-        [arr addObject:[family JSONString]];
-    }
-    return [arr JSONString];
-}
-
 
 /*
 #pragma mark - Navigation
