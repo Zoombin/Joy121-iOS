@@ -80,6 +80,14 @@
     nextButton.layer.borderWidth = 4;
     [nextButton addTarget:self action:@selector(submit:) forControlEvents:UIControlEventTouchUpInside];
     [footerView addSubview:nextButton];
+    
+    NSInteger pageIndex = [self pageIndex];
+    if (pageIndex > curPageIndex) {
+        
+    } else {
+        if (pageIndex > 0)
+            [JPersonInfo person].CurrentStep = [JPersonInfo person].CurrentStep - 1000;
+    }
 }
 
 - (void)didReceiveMemoryWarning {

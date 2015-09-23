@@ -36,7 +36,8 @@
         // 跳转
         [self nextPage:NO];
     } else {
-        [JPersonInfo person].CurrentStep = -1;
+        if (pageIndex > 0)
+            [JPersonInfo person].CurrentStep = [JPersonInfo person].CurrentStep - 1000;
     }
 }
 

@@ -35,8 +35,15 @@
 }
 
 - (void)save:(id)sender {
+    if ([JPersonInfo person].CurrentStep < 0) {
+        [JPersonInfo person].CurrentStep = [JPersonInfo person].CurrentStep + 1000;
+    }
     [[JAFHTTPClient shared] updatePersonInfo:[JPersonInfo person] success:^{
         [self.view makeToast:@"保存成功"];
+        
+        NSInteger pageIndex = [self pageIndex];
+        if (pageIndex > 0)
+            [JPersonInfo person].CurrentStep = [JPersonInfo person].CurrentStep - 1000;
     } failure:^(NSString *msg) {
         [self.view makeToast:msg];
     }];
@@ -46,6 +53,9 @@
     [JPersonInfo person].Submited = 1;
     [[JAFHTTPClient shared] updatePersonInfo:[JPersonInfo person] success:^{
         [self.view makeToast:@"提交成功"];
+        NSInteger pageIndex = [self pageIndex];
+        if (pageIndex > 0)
+            [JPersonInfo person].CurrentStep = [JPersonInfo person].CurrentStep - 1000;
     } failure:^(NSString *msg) {
         [self.view makeToast:msg];
     }];
