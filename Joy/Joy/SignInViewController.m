@@ -55,11 +55,11 @@
 //    _passwordTextField.text = @"162467";
     // 入职模块账号
 //     ／ 547990
-    _userNameTextField.text = @"620523198001061098";
-        _passwordTextField.text = @"121";
+//    _userNameTextField.text = @"620523198001061098";
+//        _passwordTextField.text = @"121";
     // 通讯录模块账号
-//        _userNameTextField.text = @"13962523821";
-//        _passwordTextField.text = @"523821";
+        _userNameTextField.text = @"13962523821";
+        _passwordTextField.text = @"523821";
 #endif
 
     [self hidenAllKeyBoard];

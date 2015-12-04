@@ -136,6 +136,7 @@
 		A94E56EC1BA003490024F54E /* UITextField+Line.m in Sources */ = {isa = PBXBuildFile; fileRef = A94E56EB1BA003490024F54E /* UITextField+Line.m */; };
 		A9577E3F1B864B17000EE8D7 /* JPersonInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = A9577E3E1B864B17000EE8D7 /* JPersonInfo.m */; };
 		A9577E421B864BFE000EE8D7 /* JSysData.m in Sources */ = {isa = PBXBuildFile; fileRef = A9577E411B864BFE000EE8D7 /* JSysData.m */; };
+		A96AD7751C11707F00D68CA9 /* ComGroupSysData.m in Sources */ = {isa = PBXBuildFile; fileRef = A96AD7741C11707F00D68CA9 /* ComGroupSysData.m */; };
 		A97B1C361B824CDA007F31E6 /* ApplyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A97B1C351B824CDA007F31E6 /* ApplyInfoViewController.m */; };
 		A97B1C391B824D08007F31E6 /* UserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A97B1C381B824D08007F31E6 /* UserInfoViewController.m */; };
 		A97B1C3C1B824D17007F31E6 /* CardInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A97B1C3B1B824D17007F31E6 /* CardInfoViewController.m */; };
@@ -400,6 +401,8 @@
 		A9577E3E1B864B17000EE8D7 /* JPersonInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPersonInfo.m; sourceTree = "<group>"; };
 		A9577E401B864BFE000EE8D7 /* JSysData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSysData.h; sourceTree = "<group>"; };
 		A9577E411B864BFE000EE8D7 /* JSysData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSysData.m; sourceTree = "<group>"; };
+		A96AD7731C11707F00D68CA9 /* ComGroupSysData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ComGroupSysData.h; sourceTree = "<group>"; };
+		A96AD7741C11707F00D68CA9 /* ComGroupSysData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ComGroupSysData.m; sourceTree = "<group>"; };
 		A97B1C341B824CDA007F31E6 /* ApplyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApplyInfoViewController.h; sourceTree = "<group>"; };
 		A97B1C351B824CDA007F31E6 /* ApplyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApplyInfoViewController.m; sourceTree = "<group>"; };
 		A97B1C371B824D08007F31E6 /* UserInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoViewController.h; sourceTree = "<group>"; };
@@ -625,6 +628,8 @@
 				A9577E3E1B864B17000EE8D7 /* JPersonInfo.m */,
 				A9577E401B864BFE000EE8D7 /* JSysData.h */,
 				A9577E411B864BFE000EE8D7 /* JSysData.m */,
+				A96AD7731C11707F00D68CA9 /* ComGroupSysData.h */,
+				A96AD7741C11707F00D68CA9 /* ComGroupSysData.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -1134,6 +1139,7 @@
 				778774A61A92E80000A68C56 /* UIViewController+ImagePicker.m in Sources */,
 				775FA504196BDEDD004D0A6D /* DSHCategory.m in Sources */,
 				778774B41A93291E00A68C56 /* EncourageRankingViewController.m in Sources */,
+				A96AD7751C11707F00D68CA9 /* ComGroupSysData.m in Sources */,
 				77384B7E1A12080B0065221A /* Contact.m in Sources */,
 				778774AC1A92E80000A68C56 /* ZBTextValidate.m in Sources */,
 				A932A4AD1B96A3960051853C /* NSDate+Joy.m in Sources */,

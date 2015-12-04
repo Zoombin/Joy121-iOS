@@ -104,6 +104,15 @@
 
 
 /**
+ *  @author Robin, 15-12-04 14:12:50
+ *
+ *  
+ *
+ *  @param block <#block description#>
+ */
+- (void)getComGroupSysData:(void (^)(NSArray *banks, NSArray *nations, NSArray *maritals, NSArray *politicals, NSArray *healths, NSArray *cultural, NSError *error))block;
+
+/**
  *  获取模块
  *
  *  @param block

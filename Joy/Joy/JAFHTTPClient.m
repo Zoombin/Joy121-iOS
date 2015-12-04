@@ -849,11 +849,58 @@ static NSString * const TOMMY = @"TOMMY";
 + (AFHTTPClient *)http {
     static AFHTTPClient *httpClient = nil;
     if (!httpClient) {
-        httpClient = [[JAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://cloud.joy121.com:999/"]];
+//        httpClient = [[JAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://cloud.joy121.com:999/"]];
+        httpClient = [[JAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://cloud.joy121.com:70/"]];
         [httpClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
         httpClient.parameterEncoding = AFFormURLParameterEncoding;
     }
     return httpClient;
+}
+
+- (void)getComGroupSysData:(void (^)(NSArray *, NSArray *, NSArray *, NSArray *, NSArray *, NSArray *, NSError *))block {
+    NSDictionary *parameters = @{
+                                 @"loginName": [self userName]};
+    [[JAFHTTPClient http] getPath:@"api/SysData/GetComGroupSysData" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        id jsonValue = [self jsonValue:responseObject];
+        NSArray *array = jsonValue[@"RetObj"];
+        NSArray *modules = [ComGroupSysData objectArrayWithKeyValuesArray:array];
+        
+        NSMutableArray *banks = [NSMutableArray array];
+        NSMutableArray *nations = [NSMutableArray array];
+        NSMutableArray *maritals = [NSMutableArray array];
+        NSMutableArray *politicals = [NSMutableArray array];
+        NSMutableArray *healths = [NSMutableArray array];
+        NSMutableArray *cultural = [NSMutableArray array];
+        
+        for (ComGroupSysData *data in modules) {
+            if ([data.SysKey isEqualToString:@"depositBank"]) {
+                [banks addObject:data];
+            }
+            if ([data.SysKey isEqualToString:@"nation"]) {
+                [nations addObject:data];
+            }
+            if ([data.SysKey isEqualToString:@"maritalStatus"]) {
+                [maritals addObject:data];
+            }
+            if ([data.SysKey isEqualToString:@"politicalStatus"]) {
+                [politicals addObject:data];
+            }
+            if ([data.SysKey isEqualToString:@"healthCondition"]) {
+                [healths addObject:data];
+            }
+            if ([data.SysKey isEqualToString:@"culturalDegree"]) {
+                [cultural addObject:data];
+            }
+        }
+        if (block) {
+            block(banks, nations, maritals, politicals, healths, cultural, nil);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (block) {
+            block(nil, nil, nil, nil, nil, nil, error);
+        }
+    }];
+
 }
 
 - (void)getModulesByCompany:(void (^)(NSArray *multiAttributes, NSError *error))block {

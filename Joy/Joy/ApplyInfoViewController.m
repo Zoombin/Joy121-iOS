@@ -191,6 +191,15 @@
         [_datas addObject:cell];
     }
     {
+        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"紧急联系人地址 : " labelImage:[UIImage imageNamed:@"entry_emergencyperson"] updateHandler:^(UITextField *textFiled) {
+            textFiled.placeholder = @"必填";
+            textFiled.text = [JPersonInfo person].UrgentAddr;
+        } changeHandler:^(NSString *string) {
+            [JPersonInfo person].UrgentAddr = string;
+        }];
+        [_datas addObject:cell];
+    }
+    {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"紧急联系方式 : " labelImage:[UIImage imageNamed:@"entry_emergencycontact"] updateHandler:^(UITextField *textFiled) {
             textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].UrgentMobile;

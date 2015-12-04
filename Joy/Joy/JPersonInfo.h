@@ -77,6 +77,22 @@
 @property (nonatomic, copy) NSString *Gender;
 
 @property (nonatomic, copy) NSString *UrgentMobile;
+// 紧急联系人地址
+@property (nonatomic, copy) NSString *UrgentAddr;
+// 民族
+@property (nonatomic, copy) NSString *Nation;
+// 婚姻状况
+@property (nonatomic, copy) NSString *MaritalStatus;
+// 政治面貌
+@property (nonatomic, copy) NSString *PoliticalStatus;
+// 健康状况
+@property (nonatomic, copy) NSString *HealthCondition;
+// 文化程度
+@property (nonatomic, copy) NSString *CulturalDegree;
+// 专业
+@property (nonatomic, copy) NSString *Major;
+// 社保账户
+@property (nonatomic, copy) NSString *SocialSecurityNo;
 
 @property (nonatomic, copy) NSString *Residence;
 
