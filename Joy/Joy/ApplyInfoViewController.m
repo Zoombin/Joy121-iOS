@@ -192,7 +192,6 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"紧急联系人地址 : " labelImage:[UIImage imageNamed:@"entry_emergencyperson"] updateHandler:^(UITextField *textFiled) {
-            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].UrgentAddr;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].UrgentAddr = string;

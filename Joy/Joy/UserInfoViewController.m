@@ -275,7 +275,6 @@
     }
     {
         ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"专业 : " labelImage:[UIImage imageNamed:@"entry_degreeno"] updateHandler:^(UITextField *textFiled) {
-            textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].Major;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].Major = string;
