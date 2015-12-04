@@ -720,7 +720,7 @@ static NSString * const TOMMY = @"TOMMY";
     NSString *loginadmin = [[JAFHTTPClient shared] userName];
     NSString *decompiles = @"\"";
     NSString *logincomplete = [NSString stringWithFormat:@"%@%@%@",decompile,loginadmin,decompiles];
-    NSString *strUrl = [NSString stringWithFormat:@"http://cloud.joy121.com/AjaxPage/app/Msg.ashx?action=comp_payroll_list&json={%@:%@}" ,loginname,logincomplete];
+    NSString *strUrl = [NSString stringWithFormat:@"http://cloud.joy121.com:99/AjaxPage/app/Msg.ashx?action=comp_payroll_list&json={%@:%@}" ,loginname,logincomplete];
     strUrl = [strUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     [self getPath:strUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSLog(@"this data:%@",[[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding]);
