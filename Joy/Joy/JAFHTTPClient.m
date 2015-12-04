@@ -849,8 +849,7 @@ static NSString * const TOMMY = @"TOMMY";
 + (AFHTTPClient *)http {
     static AFHTTPClient *httpClient = nil;
     if (!httpClient) {
-//        httpClient = [[JAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://cloud.joy121.com:999/"]];
-        httpClient = [[JAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://cloud.joy121.com:70/"]];
+        httpClient = [[JAFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:@"http://cloud.joy121.com:999/"]];
         [httpClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
         httpClient.parameterEncoding = AFFormURLParameterEncoding;
     }
