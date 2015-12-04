@@ -161,7 +161,7 @@
         [_datas addObject:cell];
     }
     {
-        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"婚姻状况 : " labelImage:[UIImage imageNamed:@"entry_bankname"] updateHandler:^(UIButton *button) {
+        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"婚姻状况 : " labelImage:[UIImage imageNamed:@"entry_marital"] updateHandler:^(UIButton *button) {
             [button setTitle:[JPersonInfo person].MaritalStatus forState:UIControlStateNormal];
         } clickHandler:^{
             if (_maritals.count == 0) {
@@ -188,7 +188,7 @@
         [_datas addObject:cell];
     }
     {
-        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"政治面貌 : " labelImage:[UIImage imageNamed:@"entry_bankname"] updateHandler:^(UIButton *button) {
+        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"政治面貌 : " labelImage:[UIImage imageNamed:@"entry_political"] updateHandler:^(UIButton *button) {
             [button setTitle:[JPersonInfo person].PoliticalStatus forState:UIControlStateNormal];
         } clickHandler:^{
             if (_politicals.count == 0) {
@@ -214,7 +214,7 @@
         [_datas addObject:cell];
     }
     {
-        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"健康状况 : " labelImage:[UIImage imageNamed:@"entry_bankname"] updateHandler:^(UIButton *button) {
+        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"健康状况 : " labelImage:[UIImage imageNamed:@"entry_health"] updateHandler:^(UIButton *button) {
             [button setTitle:[JPersonInfo person].HealthCondition forState:UIControlStateNormal];
         } clickHandler:^{
             if (_healths.count == 0) {
@@ -240,7 +240,7 @@
         [_datas addObject:cell];
     }
     {
-        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"文化程度 : " labelImage:[UIImage imageNamed:@"entry_bankname"] updateHandler:^(UIButton *button) {
+        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"文化程度 : " labelImage:[UIImage imageNamed:@"entry_culturaldegree"] updateHandler:^(UIButton *button) {
             [button setTitle:[JPersonInfo person].CulturalDegree forState:UIControlStateNormal];
         } clickHandler:^{
             if (_cultural.count == 0) {
@@ -274,7 +274,7 @@
         [_datas addObject:cell];
     }
     {
-        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"专业 : " labelImage:[UIImage imageNamed:@"entry_degreeno"] updateHandler:^(UITextField *textFiled) {
+        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"专业 : " labelImage:[UIImage imageNamed:@"entry_major"] updateHandler:^(UITextField *textFiled) {
             textFiled.text = [JPersonInfo person].Major;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].Major = string;
@@ -333,7 +333,7 @@
         [_datas addObject:cell];
     }
     {
-        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"社保账户 : " labelImage:[UIImage imageNamed:@"entry_accumulationno"] updateHandler:^(UITextField *textFiled) {
+        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"社保账户 : " labelImage:[UIImage imageNamed:@"entry_social"] updateHandler:^(UITextField *textFiled) {
             textFiled.text = [JPersonInfo person].SocialSecurityNo;
         } changeHandler:^(NSString *string) {
             [JPersonInfo person].SocialSecurityNo = string;
