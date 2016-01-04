@@ -42,6 +42,8 @@
     [self loadSaveBar];
     
     [self getCostCenteDatas];
+    
+    [[UIToolbar appearance] setTintColor:[UIColor blueColor]];
 }
 
 - (void)getCostCenteDatas {
@@ -103,6 +105,7 @@
     
     [_datas removeAllObjects];
     {
+        [[UIToolbar appearance] setBackgroundColor:[UIColor grayColor]];
         ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"应聘部门 : " labelImage:[UIImage imageNamed:@"entry_department"] updateHandler:^(UIButton *button) {
             [button setTitle:[self costCenternoName:[JPersonInfo person].ComDep] forState:UIControlStateNormal];
         } clickHandler:^{
@@ -208,7 +211,7 @@
         [_datas addObject:cell];
     }
     {
-        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"户口所在地 : " labelImage:[UIImage imageNamed:@"entry_houschold"] updateHandler:^(UITextField *textFiled) {
+        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"户籍详细地址 : " labelImage:[UIImage imageNamed:@"entry_houschold"] updateHandler:^(UITextField *textFiled) {
             textFiled.placeholder = @"必填";
             textFiled.text = [JPersonInfo person].Residence;
         } changeHandler:^(NSString *string) {

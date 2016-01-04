@@ -7,4 +7,5 @@ pod 'MJExtension'
 pod 'CRMediaPickerController'
 pod 'SDWebImage'
 pod 'Toast', '~> 2.4'
+pod 'IQKeyboardManager'
 pod 'GFramework',:git=>"https://code.slightech.com/robinge/gframework.git"

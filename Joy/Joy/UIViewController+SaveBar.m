@@ -57,6 +57,7 @@
         NSInteger pageIndex = [self pageIndex];
         if (pageIndex > 0)
             [JPersonInfo person].CurrentStep = [JPersonInfo person].CurrentStep - 1000;
+        [self.navigationController popToRootViewControllerAnimated:YES];
     } failure:^(NSString *msg) {
         [self.view makeToast:msg];
     }];
