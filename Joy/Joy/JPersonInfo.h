@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class JJob, JLearning, JExperiences, JFamily, JIdimage, JMaterials;
+@class JJob, JLearning, JExperiences, JFamily, JIdimage, JMaterials, BankCard;
 
 @interface JPersonInfo : NSObject
 
@@ -196,6 +196,8 @@
 
 @property (nonatomic, strong) JIdimage *IDImage;
 
+@property (nonatomic, strong) BankCard *BankCard;
+
 @property (nonatomic, copy) NSString *Certificates;
 
 @property (nonatomic, copy) NSString *LearningCertificate;
@@ -206,6 +208,14 @@
 
 @property (nonatomic, copy) NSString *Video;
 
+
+@end
+
+@interface BankCard : NSObject
+
+@property (nonatomic, copy) NSString *BankCardPositive;
+
+@property (nonatomic, copy) NSString *BankCardReverse;
 
 @end
 

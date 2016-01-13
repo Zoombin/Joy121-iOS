@@ -18,6 +18,8 @@ NS_ENUM(NSInteger, FileType) {
     LearningCertificate,
     IDImagePositive,
     IDImageReverse,
+    BankCardPositive,
+    BankCardReverse,
     Retirement,
     Physical
 };
@@ -140,6 +142,21 @@ NS_ENUM(NSInteger, FileType) {
         [_datas addObject:cell];
     }
     
+    {
+        ApplyImageCell *cell = [[ApplyImageCell alloc] initWithLabelString:@"银  行  卡：" labelImage:[UIImage imageNamed:@"entry_bankno"] hintString:@"(需要正反两面照片)" num:2 updateHandler:^(UIImageView *imageView, UIImageView *imageView2) {
+            if (_materials.BankCard.BankCardPositive) {
+                [imageView sd_setImageWithURL:[NSURL URLWithString:_materials.BankCard.BankCardPositive]];
+            }
+            if (_materials.BankCard.BankCardReverse) {
+                [imageView2 sd_setImageWithURL:[NSURL URLWithString:_materials.BankCard.BankCardReverse]];
+            }
+        } clickHandler:^(UIImageView *imageView, int indexSelect) {
+            _fileType = indexSelect == 0 ? BankCardPositive : BankCardReverse;
+            [weakSelf openMenu];
+        }];
+        [_datas addObject:cell];
+    }
+    
     _tableView.datas = _datas;
 }
 
@@ -160,14 +177,14 @@ NS_ENUM(NSInteger, FileType) {
 }
 
 - (BOOL)check {
-    if (!_materials.Certificates || [_materials.Certificates isEqualToString:@""]) {
-        [self.view makeToast:@"请上传证件照"];
-        return false;
-    }
-    if (!_materials.LearningCertificate || [_materials.LearningCertificate isEqualToString:@""]) {
-        [self.view makeToast:@"请上传学习证书"];
-        return false;
-    }
+//    if (!_materials.Certificates || [_materials.Certificates isEqualToString:@""]) {
+//        [self.view makeToast:@"请上传证件照"];
+//        return false;
+//    }
+//    if (!_materials.LearningCertificate || [_materials.LearningCertificate isEqualToString:@""]) {
+//        [self.view makeToast:@"请上传学习证书"];
+//        return false;
+//    }
     if (!_materials.IDImage.Positive || [_materials.IDImage.Positive isEqualToString:@""]) {
         [self.view makeToast:@"请上传身份证正面"];
         return false;
@@ -176,14 +193,14 @@ NS_ENUM(NSInteger, FileType) {
         [self.view makeToast:@"请上传身份证反面"];
         return false;
     }
-    if (!_materials.Retirement || [_materials.Retirement isEqualToString:@""]) {
-        [self.view makeToast:@"请上传退工单"];
-        return false;
-    }
-    if (!_materials.Physical || [_materials.Physical isEqualToString:@""]) {
-        [self.view makeToast:@"请上传体检报告"];
-        return false;
-    }
+//    if (!_materials.Retirement || [_materials.Retirement isEqualToString:@""]) {
+//        [self.view makeToast:@"请上传退工单"];
+//        return false;
+//    }
+//    if (!_materials.Physical || [_materials.Physical isEqualToString:@""]) {
+//        [self.view makeToast:@"请上传体检报告"];
+//        return false;
+//    }
     return true;
 }
 
@@ -287,6 +304,18 @@ NS_ENUM(NSInteger, FileType) {
                         _materials.IDImage = [[JIdimage alloc] init];
                     }
                     _materials.IDImage.Reverse = filePath;
+                    break;
+                case BankCardPositive:
+                    if (!_materials.BankCard) {
+                        _materials.BankCard = [[BankCard alloc] init];
+                    }
+                    _materials.BankCard.BankCardPositive = filePath;
+                    break;
+                case BankCardReverse:
+                    if (!_materials.BankCard) {
+                        _materials.BankCard = [[BankCard alloc] init];
+                    }
+                    _materials.BankCard.BankCardReverse = filePath;
                     break;
                 case Retirement:
                     _materials.Retirement = filePath;

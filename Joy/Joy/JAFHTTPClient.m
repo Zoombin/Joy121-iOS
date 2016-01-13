@@ -856,7 +856,7 @@ static NSString * const TOMMY = @"TOMMY";
     return httpClient;
 }
 
-- (void)getComGroupSysData:(void (^)(NSArray *, NSArray *, NSArray *, NSArray *, NSArray *, NSArray *, NSError *))block {
+- (void)getComGroupSysData:(void (^)(NSArray *, NSArray *, NSArray *, NSArray *, NSArray *, NSArray *, NSArray *, NSError *))block {
     NSDictionary *parameters = @{
                                  @"loginName": [self userName]};
     [[JAFHTTPClient http] getPath:@"api/SysData/GetComGroupSysData" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -870,6 +870,7 @@ static NSString * const TOMMY = @"TOMMY";
         NSMutableArray *politicals = [NSMutableArray array];
         NSMutableArray *healths = [NSMutableArray array];
         NSMutableArray *cultural = [NSMutableArray array];
+        NSMutableArray *provinces = [NSMutableArray array];
         
         for (ComGroupSysData *data in modules) {
             if ([data.SysKey isEqualToString:@"depositBank"]) {
@@ -890,13 +891,17 @@ static NSString * const TOMMY = @"TOMMY";
             if ([data.SysKey isEqualToString:@"culturalDegree"]) {
                 [cultural addObject:data];
             }
+            if ([data.SysKey isEqualToString:@"province"]) {
+                [provinces addObject:data];
+            }
+            
         }
         if (block) {
-            block(banks, nations, maritals, politicals, healths, cultural, nil);
+            block(banks, nations, maritals, politicals, healths, cultural, provinces, nil);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (block) {
-            block(nil, nil, nil, nil, nil, nil, error);
+            block(nil, nil, nil, nil, nil, nil, nil, error);
         }
     }];
 

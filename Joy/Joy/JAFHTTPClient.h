@@ -110,7 +110,7 @@
  *
  *  @param block <#block description#>
  */
-- (void)getComGroupSysData:(void (^)(NSArray *banks, NSArray *nations, NSArray *maritals, NSArray *politicals, NSArray *healths, NSArray *cultural, NSError *error))block;
+- (void)getComGroupSysData:(void (^)(NSArray *banks, NSArray *nations, NSArray *maritals, NSArray *politicals, NSArray *healths, NSArray *cultural, NSArray *provinces, NSError *error))block;
 
 /**
  *  获取模块

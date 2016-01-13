@@ -98,6 +98,11 @@ static JPersonInfo *personInfo = nil;
 @implementation JMaterials
 
 @end
+
+@implementation BankCard
+
+@end
+
 @implementation JIdimage
 
 @end

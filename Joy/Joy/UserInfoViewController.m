@@ -21,6 +21,7 @@
     NSMutableArray *_politicals;
     NSMutableArray *_healths;
     NSMutableArray *_cultural;
+    NSMutableArray *_provinces;
 }
 
 @end
@@ -36,8 +37,9 @@
     _politicals = [NSMutableArray array];
     _healths = [NSMutableArray array];
     _cultural = [NSMutableArray array];
+    _provinces = [NSMutableArray array];
     
-    [[JAFHTTPClient shared] getComGroupSysData:^(NSArray *banks, NSArray *nations, NSArray *maritals, NSArray *politicals, NSArray *healths, NSArray *cultural, NSError *error) {
+    [[JAFHTTPClient shared] getComGroupSysData:^(NSArray *banks, NSArray *nations, NSArray *maritals, NSArray *politicals, NSArray *healths, NSArray *cultural, NSArray *provinces, NSError *error) {
         if (error) {
             return;
         }
@@ -47,6 +49,7 @@
         _politicals = [NSMutableArray arrayWithArray:politicals];
         _healths = [NSMutableArray arrayWithArray:healths];
         _cultural = [NSMutableArray arrayWithArray:cultural];
+        _provinces = [NSMutableArray arrayWithArray:provinces];
     }];
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -134,20 +137,28 @@
         }];
         [_datas addObject:cell];
     }
-//    {
-//        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"性    别 : " labelImage:[UIImage imageNamed:@"entry_gender"] updateHandler:^(UITextField *textFiled) {
-//            textFiled.text = [JPersonInfo person].Gender;
-//        } changeHandler:^(NSString *string) {
-//            [JPersonInfo person].Gender = string;
-//        }];
-//        [_datas addObject:cell];
-//    }
     {
-        ApplyTextFiledCell *cell = [[ApplyTextFiledCell alloc] initWithLabelString:@"籍    贯 : " labelImage:[UIImage imageNamed:@"entry_birthplace"] updateHandler:^(UITextField *textFiled) {
-            textFiled.placeholder = @"必填";
-            textFiled.text = [JPersonInfo person].Regions;
-        } changeHandler:^(NSString *string) {
-            [JPersonInfo person].Regions = string;
+        ApplyPickerCell *cell = [[ApplyPickerCell alloc] initWithLabelString:@"籍    贯 : " labelImage:[UIImage imageNamed:@"entry_birthplace"] updateHandler:^(UIButton *button) {
+            [button setTitle:[JPersonInfo person].Regions forState:UIControlStateNormal];
+        } clickHandler:^{
+            if (_provinces.count == 0) {
+                return;
+            }
+            [ActionSheetStringPicker showPickerWithTitle:@"籍贯"
+                                                    rows:_provinces
+                                        initialSelection:0
+                                               doneBlock:^(ActionSheetStringPicker *picker, NSInteger selectedIndex, id selectedValue) {
+                                                   if (selectedIndex >= _provinces.count) {
+                                                       return;
+                                                   }
+                                                   ComGroupSysData *compose = [_provinces objectAtIndex:selectedIndex];
+                                                   [JPersonInfo person].Regions = compose.SysKeyName;
+                                                   [_tableView reloadData];
+                                               }
+                                             cancelBlock:^(ActionSheetStringPicker *picker) {
+                                                 NSLog(@"Block Picker Canceled");
+                                             }
+                                                  origin:self.view];
         }];
         [_datas addObject:cell];
     }
